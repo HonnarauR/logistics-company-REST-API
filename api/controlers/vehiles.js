@@ -100,7 +100,6 @@ exports.updateInfo=(req,res,next)=>{
 
 //The Order Count will be reduced if the order is Deliverd else it will be increased When Order is placed
 exports.chengeOrderCount=(req,res,next)=>{
-    console.log(".......................................Inside Vehicle Reduce Count.................................")
 
     console.log(req.orderInfo);
     //checking Delivery status
@@ -126,8 +125,6 @@ exports.is_vehicle_available=(req,res,next)=>{
         const availableVehicles= docs.filter(doc=>doc.activeOrdersCount<2)
 
         if(availableVehicles.length>0){
-           const {registrationNumber}=availableVehicles[0];
-
            req.vehicleInfo=availableVehicles[0];
             next();
 

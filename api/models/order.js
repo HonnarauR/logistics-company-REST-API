@@ -3,8 +3,7 @@ const mongoose =require( 'mongoose')
 const orderSchema = mongoose.Schema({
     orderNumber:{
         type:Number,
-        required:true
-        // unique:true
+        unique:true
     },
     itemId:{
         type:String,

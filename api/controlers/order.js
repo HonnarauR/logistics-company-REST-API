@@ -2,15 +2,16 @@ const Order = require('../models/order');
 
 
 // Creates new Order
-exports.create_order =(req,res,next)=>{
+exports.create_order =  (req,res,next)=>{
 
-        // Order.find().sort({orderNumber : -1}).limit(1).exec()
-        // .then(doc=>{
-        //     const newOrderNumber=(doc!==null)? doc.orderNumber +1 : 1;
-            const newOrderNumber=12;
+        Order.find({},{orderNumber:1}).sort({orderNumber : -1}).limit(1).exec()
+
+        .then(result=>{
+            console.log(result);
+            const seq=result[0].orderNumber;
 
             const order = new Order({
-                orderNumber:newOrderNumber,
+                orderNumber:seq+1,
                 itemId:req.itemInfo._id,
                 price:req.itemInfo.cost,
                 customerId:req.customerInfo._id,
@@ -18,11 +19,11 @@ exports.create_order =(req,res,next)=>{
             })
 
             order.save()
-            .then(result=>{
-                req.orderInfo=result;
+            .then(result2=>{
+                req.orderInfo=result2;
                 next();
                 res.status(201).json({
-                    orderNumber:newOrderNumber,
+                    orderNumber:result2.orderNumber,
                     customerName:req.customerInfo.customerName,
                     itemName:req.itemInfo.name,
                     cost:req.itemInfo.cost,
@@ -37,6 +38,20 @@ exports.create_order =(req,res,next)=>{
                     error:err
                 })
             })
+        })
+        .catch(err2=>{
+            console.log(err2);
+            // res.status(400).json({
+            //     message:"Unable to find old orderNumber"
+            // })
+        })
+
+        
+        // var seq = cursor!==null ? cursor.orderNumber + 1 : 1;
+
+            // const newOrderNumber=12;
+
+           
         // })
         // .catch(err=>{
         //     console.log(err);
