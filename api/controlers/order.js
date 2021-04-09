@@ -6,12 +6,12 @@ exports.create_order =  (req,res,next)=>{
 
         Order.find({},{orderNumber:1}).sort({orderNumber : -1}).limit(1).exec()
 
-        .then(result=>{
-            console.log(result);
-            const seq=result[0].orderNumber;
+        .then(docs=>{
+
+            const seq=  (docs.length>0)? docs[0].orderNumber + 1 : 1;
 
             const order = new Order({
-                orderNumber:seq+1,
+                orderNumber:seq,
                 itemId:req.itemInfo._id,
                 price:req.itemInfo.cost,
                 customerId:req.customerInfo._id,
@@ -19,11 +19,12 @@ exports.create_order =  (req,res,next)=>{
             })
 
             order.save()
-            .then(result2=>{
-                req.orderInfo=result2;
+            .then(result=>{
+                req.orderInfo=result;
                 next();
+
                 res.status(201).json({
-                    orderNumber:result2.orderNumber,
+                    orderNumber:result.orderNumber,
                     customerName:req.customerInfo.customerName,
                     itemName:req.itemInfo.name,
                     cost:req.itemInfo.cost,
@@ -41,25 +42,11 @@ exports.create_order =  (req,res,next)=>{
         })
         .catch(err2=>{
             console.log(err2);
-            // res.status(400).json({
-            //     message:"Unable to find old orderNumber"
-            // })
+            res.status(400).json({
+                message:"Unable to find old orderNumber"
+            })
         })
 
-        
-        // var seq = cursor!==null ? cursor.orderNumber + 1 : 1;
-
-            // const newOrderNumber=12;
-
-           
-        // })
-        // .catch(err=>{
-        //     console.log(err);
-        //     res.status(400).json({
-        //         message:"Unable to find max OrderNumber",
-        //         error:err
-        //     })
-        // })      
 }
 
 
