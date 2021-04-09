@@ -58,6 +58,7 @@ exports.all_vehicles=(req,res,next)=>{
                 message:"No Vehicle details available"
             })
         }
+        
         res.status(200).json(resultObject);
     })
 }

@@ -68,8 +68,10 @@ exports.get_all_orders=(req,res,next)=>{
         }
          res.status(200).json(All_Orders);
     })
-    .catch(err=>res.status(400).json({
-        message:"Unable get all Order details"
+    .catch(err=>
+        res.status(400).json({
+        message:"Unable to get all Order details",
+        error:err
     }))
 }
 
@@ -84,19 +86,20 @@ exports.orderInfo=(req,res,next)=>{
         }else{
             res.status(400).json({
                 message:"orderId not found,InsideOrderInfo",
-                err
+                error:err
             })
         }
     })
      .catch(err=>res.status(400).json({
          message:"orderId not found,InsideOrderInfo",
-         err
+         error:err
      }))
 }
 
 // Updates the status of order once it is delivered
 exports.updateStatus=(req,res,next)=>{
-    const{isDelivered,orderNumber} =req.orderInfo
+    const{isDelivered,orderNumber} =req.orderInfo;
+    
     Order.findOneAndUpdate({orderNumber:orderNumber},{$set:{isDelivered:true}},{new:true,runValidators: true},
         (err,result)=>{
             if(err){
