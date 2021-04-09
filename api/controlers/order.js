@@ -40,10 +40,11 @@ exports.create_order =  (req,res,next)=>{
                 })
             })
         })
-        .catch(err2=>{
-            console.log(err2);
+        .catch(catcherr=>{
+            console.log(catcherr);
             res.status(400).json({
-                message:"Unable to find old orderNumber"
+                message:"Unable process ",
+                error:err
             })
         })
 
