@@ -7,7 +7,6 @@ exports.create_order =  (req,res,next)=>{
         Order.find({},{orderNumber:1}).sort({orderNumber : -1}).limit(1).exec()
 
         .then(docs=>{
-
             const seq=  (docs.length>0)? docs[0].orderNumber + 1 : 1;
 
             const order = new Order({
@@ -43,7 +42,7 @@ exports.create_order =  (req,res,next)=>{
         .catch(catcherr=>{
             console.log(catcherr);
             res.status(400).json({
-                message:"Unable process ",
+                message:"Unable to process ",
                 error:err
             })
         })
