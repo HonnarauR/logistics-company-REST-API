@@ -80,9 +80,7 @@ exports.isItemAvailable=(req,res,next)=>{
                 req.itemInfo=result;
                 next();
             }else{
-                res.status(400).json({
-                    message:"Item not avilable"
-                })
+                res.status(404).json({message:"Unable to find Item"});
             }    
         }
     })
